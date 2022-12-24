@@ -1,0 +1,140 @@
+<!-- prettier-ignore -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://libs.zappar.com/zappar-aframe/2.0.0/zappar-aframe.js"></script>
+
+    <meta charset="utf-8" />
+
+    <link rel="icon" href="assets/Icon.png" type="image/png" />
+
+    <title>Space Quiz WebAR</title>
+    <!-- INLINE STYLES -->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap");
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizelegibility;
+        font-family: "Lato", sans-serif;
+      }
+    </style>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Zappar Splash Screen Useful Package -->
+    <script
+      defer
+      src="https://libs.zappar.com/zappar-splash/0.0.0-rc.1/zappar-splash.js"
+    ></script>
+  </head>
+  <body>
+    <!-- OPEN CANVAS/SCENE -->
+    <a-scene loading-screen="backgroundColor: #344b60">
+      <!-- Ask user for camera permissions, display some text if permission is denied -->
+      <a-entity zappar-permissions-ui id="permissions"></a-entity>
+      <!-- shows a full-page dialog that informs the user they're using an unsupported browser -->
+      <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
+
+      <!-- ASSET MANAGING SYSTEM -->
+      <a-assets>
+        <!-- ALL PLANET TEXTURES (PLANET TEXTURES FROM SHADERELIEF http://www.shadedrelief.com/natural3/index.html & SOLARSYSTEMSCOPE https://www.solarsystemscope.com/textures/)-->
+        <img id="questionUITexture" src="assets/Question.png" />
+        <img id="answerUITexture" src="assets/Answer.png" />
+        <img id="titleTexture" src="assets/Title.png" />
+      </a-assets>
+      <!-- END ASSET MANAGING SYSTEM -->
+
+      <!-- MIXINS -->
+
+      <!-- CREATE AN A-FRAME CAMERA AND REPLACE IT WITH ZAPPAR'S -->
+      <a-camera zappar-camera="user-facing: true;"></a-camera>
+
+      <!-- CREATE FACE TRACKING TYPE -->
+      <a-entity zappar-face id="face-group">
+        <!-- AMBIENT LIGHTING -->
+        <a-entity light="type: ambient; color: #CCC"></a-entity>
+
+        <!-- HEAD MASK TO LIMIT 3D ELEMENTS -->
+        <a-entity
+          zappar-head-mask="face: #face-group;"
+          light="type: point; color: #ffaf46; intensity: 1.5"
+        ></a-entity>
+
+        <!-- <a-entity id="venus" mixin="orbit" animation="dur: 10000;">
+                <a-sphere position="0 0.65 1.8" radius="0.2" material="src: #questionUITexture;" mixin="rotate"></a-sphere>
+            </a-entity> -->
+
+        <a-entity id="questionUI">
+          <a-plane
+            position="0 1.35 0.8"
+            width="1.4"
+            height="0.6"
+            material="src: #questionUITexture; transparent: true; opacity: 1"
+          ></a-plane>
+          <a-text
+            id="questionText"
+            value="Tap button to start"
+            position="0 1.35 0.8"
+            width="0.3"
+            align="center"
+            color="#ffffff"
+            scale="4.8 4.8 4.8 "
+          ></a-text>
+        </a-entity>
+
+        <a-entity id="answerUILeft">
+          <a-plane
+            position="-0.5 0.8 0.79"
+            width="0.4"
+            height="0.4"
+            material="src: #answerUITexture; transparent: true; opacity: 1"
+          ></a-plane>
+          <a-text
+            id="answerTextLeft"
+            value=""
+            position="-0.5 0.8 0.8"
+            width="0.6"
+            align="center"
+            color="#ffffff"
+            scale="3.5 3.5 3.5"
+          ></a-text>
+        </a-entity>
+
+        <a-entity id="answerUIRight">
+          <a-plane
+            position="0.5 0.8 0.79"
+            width="0.4"
+            height="0.4"
+            material="src: #answerUITexture; transparent: true; opacity: 1"
+          ></a-plane>
+          <a-text
+            id="answerTextRight"
+            value=""
+            position="0.5 0.8 0.8"
+            width="0.6"
+            align="center"
+            color="#ffffff"
+            scale="3.5 3.5 3.5"
+          ></a-text>
+        </a-entity>
+      </a-entity>
+      <!-- END FACE TRACKING -->
+    </a-scene>
+    <!-- END SCENE -->
+
+    <!-- Some UI for answer the question -->
+    <div id="startButtonUI" class="noselect">Start the quiz</div>
+    <div id="leftButtonUI" class="noselect hidden">Mercury</div>
+    <div id="rightButtonUI" class="noselect hidden">Venus</div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
+
+<!-- prettier-ignore -->
